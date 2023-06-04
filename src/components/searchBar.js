@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export default function searchBar(){
+export default function SearchBar(){
     return(
     <>
         <Bar/>
@@ -9,11 +9,15 @@ export default function searchBar(){
 }
 
 const Bar = styled.input`
-    width: 375px;
-    height: 80px;
+    width: 175px;
+    height: 30px;
+    border:none;
+    border-radius:4px;
     background-color: white;
+    
+    
 `
 const But = styled.div`
     width: 105px;
-    height: 80px;
+    height: 20px;
 `
