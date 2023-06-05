@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useState, useNavigate, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/router'
 import axios from "axios";
 
 export default function SignUpForm(){
@@ -8,6 +9,7 @@ export default function SignUpForm(){
     const [ password, setPassword] = useState("")
     const [ confirmPassword, setConfirmPassword] = useState("")
     const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
     const [image, setImage] = useState("");
     const [cep,setCep] = useState("");
     const [state, setState] = useState("");
@@ -15,7 +17,7 @@ export default function SignUpForm(){
     const [street, setStreet] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const navigate = useNavigate();
+    const router = useRouter();
 
     async function getAddressByCEP(){
         try {
@@ -30,24 +32,22 @@ export default function SignUpForm(){
         }
     }
 
-    async function createNewUser(){
-        if(password != confirmPassword) return alert('senha não foi confirmada corretamente.');
-        try {
-            const body = {
-                email,
-                password,
-                name,
-                image,
-                state,
-                city,
-                street
-            }
-            await axios.post(process.env.DATABASE_URL,body);
-            navigate('/');
-            
-        } catch (error) {
-            console.log(`Error in create: ${error.response.data.message}`)
+    async function createNewUser(event){
+        event.preventDefault();
+        if(password != confirmPassword) return console.log('senha não foi confirmada corretamente.');
+        const body = {
+            email,
+            password,
+            name,
+            phone,
+            image,
+            state,
+            city,
+            street
         }
+        axios.post(`http://localhost:5000/signUp`,body)
+        .then(console.log('testando funcionalidade'))
+        .catch((error) => console.log(error))
     }
 
     useEffect(()=> {
@@ -55,12 +55,13 @@ export default function SignUpForm(){
     },[cep]);
 
     return(
-        <Form onSubmit={() => console.log('aqui vai a função')}>
+        <Form onSubmit={createNewUser}>
             <h2>Crie sua conta</h2>
             <input disabled={loading} type="email" required value={email} onChange={e=> setEmail(e.target.value)}  placeholder="email"/>
             <input disabled={loading} type="password" required value={password} onChange={e=> setPassword(e.target.value)} placeholder="senha" />
-            <input disabled={loading} type="confirm password" required value={password} onChange={e=> setPassword(e.target.value)} placeholder="confirme a senha" />
+            <input disabled={loading} type="password" required value={confirmPassword} onChange={e=> setConfirmPassword(e.target.value)} placeholder="confirme a senha" />
             <input disabled={loading} type="text" value={name} onChange={e=> setName(e.target.value)} placeholder="nome" required/>
+            <input disabled={loading} type="text" value={phone} onChange={e=> setPhone(e.target.value)} placeholder="celular" required/>
             <input disabled={loading} type="text" value={image} onChange={e=> setImage(e.target.value)}  placeholder="foto" required/>
             <div>
                 <input disabled={loading} type="text" value={cep} onChange={e=> setCep(e.target.value)}  placeholder="cep"/>

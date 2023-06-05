@@ -1,13 +1,16 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import SearchBar from './searchBar';
+import { useContext } from 'react';
+import { TokenContext } from '../../contexts/tokenContext';
 
 export default function Header(){
+    const { image } = useContext(TokenContext);
     return(
         <HeaderBordy>
             <div>
                 <Link href='/'><Logoimg src='/assets/Title.svg' alt='logo'/></Link>
-                <Link href='/signUp'><Userimg src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr1N_0OGKodLvwNl0ndJLUscAYGCp6XMdjpdHBPr25uYAp2-Sm7QH28fOizc_XkluNyNE&usqp=CAU' alt='midoria'/></Link>
+                <Link href='/signUp'><Userimg src={image} alt='userImg'/></Link>
             </div>
         </HeaderBordy>
     )
