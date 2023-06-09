@@ -8,24 +8,24 @@ export default function Header(){
     const { image } = useContext(TokenContext);
     return(
         <HeaderBordy>
-            <div>
-                <Link href='/'><Logoimg src='/assets/Title.svg' alt='logo'/></Link>
-                <Link href='/signUp'><Userimg src={image} alt='userImg'/></Link>
+            <div className='space'>
+                <Logoimg src='/assets/Title.svg' alt='logo'/>
+                <AuthMenu>
+                    <Link href='/signIn'>Login</Link>
+                    <Link href='/signUp'><button>signUp</button></Link>
+                    {image ? <Userimg image={true} src={image} alt='userImg'/> : 
+                    <Userimg src='assets/userIconYellow.svg' alt='userImg'/>}
+                </AuthMenu>
             </div>
+            
         </HeaderBordy>
     )
 }
 
-// function Userimg(){
-//     return(
-//         <></>
-//     )
-// }
-
 const HeaderBordy = styled.div`
     width: 100%;
     height: 100px;
-    background-color: #140A2F;
+    background: linear-gradient(180deg, #1B0166 0%, #08001F 100%);
     position: fixed;
     top:0px;
 
@@ -33,17 +33,26 @@ const HeaderBordy = styled.div`
     justify-content:center;
     align-items: center;
 
-    div{
+    *{
+        transition: all easy .2s;
+    }
+
+    .space{
         display: flex;
         justify-content:space-between;
-        min-width:600px;
-        width: 100%;
-        max-width:1000px
+        width: 90%;
+        min-width: 375px;
+        max-width: 1000px
     }
 
     a{
         color: white;
         text-decoration:none;
+        font-size: 16px;
+
+        &:hover{
+            color: #fee204;
+        }
     }
 `;
 
@@ -51,10 +60,73 @@ const Logoimg = styled.img`
     width: 200px;
 `;
 
+const AuthMenu = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    width: 200px;
+
+    button{
+        width: 75px;
+        height: 35px;
+        color #fee204;
+        background: none;
+        border-radius: 8px;
+        border: 2px solid #fee204;
+        font-size: 16px;
+        transition: all linear .2s;
+
+         &:hover{
+            border: 2px solid #FFB800;
+        }
+    }
+`
+    
+
+
 const Userimg = styled.img`
     width: 40px;
     height: 40px;
     border-radius:80px;
-    border: 3px solid #fee204;
     object-fit:cover;
+    border: ${props => props.image ? '3px solid #fee204' : 'none'};
 `;
+
+
+
+            // <div>
+            //     <Link href='/'><Logoimg src='/assets/Title.svg' alt='logo'/></Link>
+            //     <Link href='/signIn'>Login</Link>
+            //     <Link href='/signUp'>
+            //         {image ? <Userimg image={true} src={image} alt='userImg'/> : <Userimg src='assets/userIconYellow.svg' alt='userImg'/>}
+            //     </Link>
+            // </div>
+
+
+
+        //     const HeaderBordy = styled.div`
+        //     width: 100%;
+        //     height: 100px;
+        //     background: linear-gradient(180deg, #1B0166 0%, #08001F 100%);
+        //     position: fixed;
+        //     top:0px;
+        
+        //     display: flex;
+        //     justify-content:center;
+        //     align-items: center;
+        
+        //     div{
+        //         display: flex;
+        //         justify-content:space-between;
+        //         align-items:center;
+        //         min-width:600px;
+        //         width: 100%;
+        //         max-width:1000px
+        //     }
+        
+        //     a{
+        //         color: white;
+        //         text-decoration:none;
+        //     }
+        // `;
+        

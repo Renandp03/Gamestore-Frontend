@@ -16,18 +16,19 @@ export default function SignInForm(){
 
     async function login(event){
         event.preventDefault();
+        const URL = process.env.NEXT_PUBLIC_HOST
         const body = {
             email,
             password
         };
 
-        await axios.post(`http://localhost:5000/signIn`,body)
+        await axios.post(`${URL}/signIn`,body)
         .then((res) => {
-            console.log(res.data)
             setToken(res.data.token);
             localStorage.setItem('token',JSON.stringify(res.data.token));
             setImage(res.data.image);
             localStorage.setItem('image',JSON.stringify(res.data.image));
+            router.push('/');
         })
         .catch((error) => console.log(error))
     }
@@ -38,7 +39,7 @@ export default function SignInForm(){
             <input disabled={loading} type="email" required value={email} onChange={e=> setEmail(e.target.value)}  placeholder="email"/>
             <input disabled={loading} type="password" required value={password} onChange={e=> setPassword(e.target.value)} placeholder="senha" />
             
-            <button data-text="singup-btn" disabled={loading} type="submit">{loading ? <img src="assets/loading.svg" alt="loading"/> : "Cadastrar" }</button>
+            <button data-text="singup-btn" disabled={loading} type="submit">{loading ? <img src="assets/loading.svg" alt="loading"/> : "Login" }</button>
         </Form>
     )
 }
@@ -92,7 +93,7 @@ const Form = styled.form`
     button{
         width: 180px;
         height: 50px;
-        background: #FFBB12;
+        background: linear-gradient(359.99deg, #F3BA27 0.01%, #FFE600 99.99%);
         border: none;
         border-radius: 3px;
         color: #774801;
@@ -101,7 +102,6 @@ const Form = styled.form`
         transition: all linear .2s;
 
         &:hover{
-            background: #FFB806;
             font-size: 21px;
 
         }

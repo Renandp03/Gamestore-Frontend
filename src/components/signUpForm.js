@@ -34,6 +34,7 @@ export default function SignUpForm(){
 
     async function createNewUser(event){
         event.preventDefault();
+        const URL = process.env.NEXT_PUBLIC_HOST
         if(password != confirmPassword) return console.log('senha não foi confirmada corretamente.');
         const body = {
             email,
@@ -45,9 +46,9 @@ export default function SignUpForm(){
             city,
             street
         }
-        axios.post(`http://localhost:5000/signUp`,body)
-        .then(console.log('testando funcionalidade'))
-        .catch((error) => console.log(error))
+        axios.post(`${URL}/signUp`,body)
+        .then(router.push('/'))
+        .catch((error) => console.log(error));
     }
 
     useEffect(()=> {

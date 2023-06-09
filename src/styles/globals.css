@@ -29,7 +29,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 	font-family: roboto;
-	background-color: #08001F;
+	background: linear-gradient(135deg, #1B0166 0%, #08001F 100%);
 }
 ol, ul {
 	list-style: none;
