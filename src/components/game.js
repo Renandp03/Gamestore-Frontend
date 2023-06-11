@@ -1,6 +1,37 @@
 import styled from "styled-components";
+import { useState, useContext, useEffect } from "react";
+import { TokenContext } from "../../contexts/tokenContext";
+import axios from "axios";
+
 export default function Game(props){
     const { id, name, image, consoleId, userImg, userId } = props;
+    const { favorites, token } = useContext(TokenContext);
+    const [liked, setLiked] = useState(false);
+
+    useEffect(() => {
+        const isLiked = favorites.filter( f => f.gameId == id);
+        if(isLiked.length > 0){setLiked(true)}
+    }, []);
+
+
+    function like(){
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        axios.post(`${process.env.NEXT_PUBLIC_HOST}/favorites/post/${id}`,{},config)
+            .then(() => { if(liked){setLiked(false)} else{setLiked(true)}; })
+            .catch((err) => {
+                if(err.response.data.name == 'unauthorizedError'){
+                    console.log('AQUI VAI O AVISO PARA FAZER LOGIN');
+                }
+            });
+
+        
+    }
 
     return(
         <GameBody consoleId={consoleId}>
@@ -10,7 +41,7 @@ export default function Game(props){
                 {name.length > 8 ? 
                 <p>{name.substring(0,8) + '...'}</p> : 
                 <p>{name}</p>}
-                <img className="like" src="assets/Heart.svg" alt="heart"/>
+                <img className="like" onClick={like} src={liked ? "assets/Heartfull.svg" : "assets/Heart.svg"} alt="heart"/>
             </div>
         </GameBody>
     )
@@ -21,16 +52,19 @@ const GameBody = styled.div`
     height: 268px;
     border-radius: 8px;
     background: white;
+    margin: 30px;
+    transition: all linear .2s;
+    box-shadow: drop-shadow(2px 4px 2px rgba(0, 0, 0, 0.1));
 
     img{
-        width: 218px;
+        width: 100%;
         height: 218px;
         border-radius: 8px 8px 0px 0px;
         object-fit:cover;
     }
 
     div{
-        width: 218px;
+        width: 100%;
         height: 50px;
         border-radius: 0px 0px 8px 8px;
         position: relative;
@@ -68,5 +102,9 @@ const GameBody = styled.div`
             top:10px;
             left:13px;
         }
+    }
+
+    &:hover{
+        margin: 25px 30px 35px 30px;
     }
 `

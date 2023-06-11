@@ -24,6 +24,7 @@ export default function SignInForm(){
 
         await axios.post(`${URL}/signIn`,body)
         .then((res) => {
+            console.log(res.data)
             setToken(res.data.token);
             localStorage.setItem('token',JSON.stringify(res.data.token));
             setImage(res.data.image);
