@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 
 export default function SignInForm(){
-    const { token, setToken, image, setImage } = useContext(TokenContext);
+    const { token, setToken, image, setImage, userId, setUserId, setFavorites } = useContext(TokenContext);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -24,14 +24,26 @@ export default function SignInForm(){
 
         await axios.post(`${URL}/signIn`,body)
         .then((res) => {
-            console.log(res.data)
             setToken(res.data.token);
             localStorage.setItem('token',JSON.stringify(res.data.token));
             setImage(res.data.image);
             localStorage.setItem('image',JSON.stringify(res.data.image));
-            router.push('/');
+            setUserId(res.data.userId);
+            localStorage.setItem('userId',JSON.stringify(res.data.userId));
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${res.data.token}`,
+                }
+            };
+            axios.get(`${URL}/favorites/get/${res.data.userId}`,config)
+            .then((response) => {
+                setFavorites(response.data);
+                router.push('/');
+            })
+            .catch((err) => console.log(err.message));
         })
-        .catch((error) => console.log(error))
+        .catch((error) => console.log(error));
     }
 
     return(

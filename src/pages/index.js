@@ -1,10 +1,12 @@
 import Head from 'next/head'
 import styled from 'styled-components';
 import Header from '@/components/header'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AlertContext } from '../../contexts/alertContext';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Game from '@/components/game';
+import Alert from '@/components/alert';
 
 
 export default function Home() {
@@ -30,6 +32,7 @@ export default function Home() {
         <link rel="icon" href="assets/logoIcon.svg" />
       </Head>
       <main>
+        <Alert/>
         <Header/>
         <Screen>
           <h1>Home</h1>

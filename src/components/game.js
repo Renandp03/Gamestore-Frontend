@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
+import { AlertContext } from "../../contexts/alertContext";
 import axios from "axios";
 
 export default function Game(props){
     const { id, name, image, consoleId, userImg, userId } = props;
     const { favorites, token } = useContext(TokenContext);
+   const { alertDisable, setAlertDisable, setMessage } = useContext(AlertContext);
     const [liked, setLiked] = useState(false);
 
     useEffect(() => {
@@ -26,7 +28,8 @@ export default function Game(props){
             .then(() => { if(liked){setLiked(false)} else{setLiked(true)}; })
             .catch((err) => {
                 if(err.response.data.name == 'unauthorizedError'){
-                    console.log('AQUI VAI O AVISO PARA FAZER LOGIN');
+                    setMessage('É preciso fazer login na Gamestore antes de adicionar um jogo a lista de desejos');
+                    setAlertDisable(false);
                 }
             });
 
@@ -53,8 +56,11 @@ const GameBody = styled.div`
     border-radius: 8px;
     background: white;
     margin: 30px;
-    transition: all linear .2s;
     box-shadow: drop-shadow(2px 4px 2px rgba(0, 0, 0, 0.1));
+
+    *{
+        transition: all linear .1s;
+    }
 
     img{
         width: 100%;
@@ -80,6 +86,13 @@ const GameBody = styled.div`
             left: 178px;
             color: white;
             border: none;
+
+            &:hover{
+                width: 34px;
+                height: 34px;
+                left: 176px;
+
+            }
         }
 
         p{

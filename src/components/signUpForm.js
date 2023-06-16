@@ -47,7 +47,7 @@ export default function SignUpForm(){
             street
         }
         axios.post(`${URL}/signUp`,body)
-        .then(router.push('/'))
+        .then(router.push('/signIn'))
         .catch((error) => console.log(error));
     }
 
