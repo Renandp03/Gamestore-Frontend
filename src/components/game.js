@@ -3,6 +3,7 @@ import { useState, useContext, useEffect } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import { AlertContext } from "../../contexts/alertContext";
 import axios from "axios";
+import Link from "next/link";
 
 export default function Game(props){
     const { id, name, image, consoleId, userImg, userId } = props;
@@ -38,7 +39,7 @@ export default function Game(props){
 
     return(
         <GameBody consoleId={consoleId}>
-            <img src={image} alt={name}/>
+            <Link href={`/game/${id}`}><img src={image} alt={name}/></Link>
             <div>
                 <img src={userImg} alt={userId}/>
                 {name.length > 8 ? 
@@ -55,8 +56,9 @@ const GameBody = styled.div`
     height: 268px;
     border-radius: 8px;
     background: white;
-    margin: 30px;
+    margin: 15px;
     box-shadow: drop-shadow(2px 4px 2px rgba(0, 0, 0, 0.1));
+    transition: all linear .2s;
 
     *{
         transition: all linear .1s;
@@ -78,7 +80,7 @@ const GameBody = styled.div`
         props => props.consoleId == 1 ? 'linear-gradient(134.59deg, #3565DF 15.4%, #0AB6ED 100%);' :
         props.consoleId == 2 ? 'linear-gradient(134.59deg, #25AE19 15.4%, #22EB2A 100%);' :
         props.consoleId == 3 ? 'linear-gradient(134.59deg, #F32764 15.4%, #DA0000 100%);' :
-        'white;'
+        'red;'
         };
 
         .like{
@@ -86,6 +88,7 @@ const GameBody = styled.div`
             left: 178px;
             color: white;
             border: none;
+            cursor:pointer;
 
             &:hover{
                 width: 34px;
@@ -99,7 +102,7 @@ const GameBody = styled.div`
             font-weight: 400;
             font-size: 24px;
             line-height: 28px;
-            color: #4F4F4F;
+            color: white;
             position: absolute;
             top:11px;
             left:60px;
@@ -118,6 +121,6 @@ const GameBody = styled.div`
     }
 
     &:hover{
-        margin: 25px 30px 35px 30px;
+        margin: 25px 25px 35px 25px;
     }
 `

@@ -41,7 +41,12 @@ export default function SignInForm(){
                 setFavorites(response.data);
                 router.push('/');
             })
-            .catch((err) => console.log(err.message));
+            .catch((err) =>{ 
+            
+                if(err.response.data.name == 'notFound'){
+                    console.log('Nenhum favorites encontrado');
+                    router.push('/');
+                }});
         })
         .catch((error) => console.log(error));
     }

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Game from '@/components/game';
 import Alert from '@/components/alert';
+import Link from 'next/link';
 
 
 export default function Home() {
@@ -14,11 +15,12 @@ export default function Home() {
   const [games, setGames] = useState([]);
 
   async function renderPage(){
-    axios.get(`${process.env.NEXT_PUBLIC_HOST}/games`)
+    const URL = process.env.NEXT_PUBLIC_HOST
+    axios.get(`${URL}/games`,)
       .then((res) => {
         setGames(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err.message));
   }
 
   useEffect(() => {renderPage()},[])
@@ -38,15 +40,17 @@ export default function Home() {
           <h1>Home</h1>
           <GamesDiv>
           
-            {games.map((g) => 
-            <Game 
-            key={g.id}
-            id={g.id}
-            name={g.name}
-            image={g.image}
-            consoleId={g.consoleId}
-            userId={g.users.id}
-            userImg={g.users.image}/>)}
+            {games.map((g) =>
+            
+              <Game 
+                key={g.id}
+                id={g.id}
+                name={g.name}
+                image={g.image}
+                consoleId={g.consoleId}
+                userId={g.users.id}
+                userImg={g.users.image}/>
+            )}
           </GamesDiv>
         </Screen>
       </main>
@@ -59,10 +63,10 @@ export const Screen = styled.div`
  
   display: flex;
   flex-direction: column;
-  justify-content:center;
   align-items:center;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  min-height:100vh;
   background: linear-gradient(180deg, #1B0166 0%, #08001F 100%);
   margin-top: 100px;
 
@@ -70,8 +74,7 @@ export const Screen = styled.div`
   h1{
     font-size: 64px;
     color: white;
-    margin: 10px 50px;
-
+    margin: 10px 15px;
     align-self:flex-start;
   }
 `
@@ -82,5 +85,4 @@ const GamesDiv = styled.div`
   display: flex;
   justify-content:center;
   flex-wrap: wrap;
-  align-items: center;
 `

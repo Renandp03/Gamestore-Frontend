@@ -5,16 +5,26 @@ import { useContext } from 'react';
 import { TokenContext } from '../../contexts/tokenContext';
 
 export default function Header(){
-    const { image } = useContext(TokenContext);
+    const { token,image } = useContext(TokenContext);
     return(
         <HeaderBordy>
             <div className='space'>
-                <Logoimg src='/assets/Title.svg' alt='logo'/>
+                <Link href={'/'}><Logoimg src='/assets/Title.svg' alt='logo'/></Link>
                 <AuthMenu>
-                    <Link href='/signIn'>Login</Link>
-                    <Link href='/signUp'><button>signUp</button></Link>
-                    {image ? <Userimg image={true} src={image} alt='userImg'/> : 
-                    <Userimg src='assets/userIconYellow.svg' alt='userImg'/>}
+                    {token ? 
+                    <>
+                        <Link href='/signIn'>Login</Link>
+                        <Link href='/signUp'><button>signUp</button></Link>
+                    
+                    </> 
+                    : 
+                    <>
+                        <Link href='/signIn'>Login</Link>
+                        <Link href='/signUp'><button>signUp</button></Link>
+                    </>}
+                    
+                    {image ? <Link href={'/createGame'}><Userimg image={true} src={image} alt='userImg'/></Link> : 
+                    <Userimg src='../../assets/userIconYellow.svg' alt='genericImage'/>}
                 </AuthMenu>
             </div>
             
@@ -28,6 +38,7 @@ const HeaderBordy = styled.div`
     background: linear-gradient(180deg, #1B0166 0%, #08001F 100%);
     position: fixed;
     top:0px;
+    z-index:5;
 
     display: flex;
     justify-content:center;
@@ -75,6 +86,7 @@ const AuthMenu = styled.div`
         border: 2px solid #fee204;
         font-size: 16px;
         transition: all linear .2s;
+        cursor:pointer;
 
          &:hover{
             border: 2px solid #FFB800;
@@ -91,42 +103,3 @@ const Userimg = styled.img`
     object-fit:cover;
     border: ${props => props.image ? '3px solid #fee204' : 'none'};
 `;
-
-
-
-            // <div>
-            //     <Link href='/'><Logoimg src='/assets/Title.svg' alt='logo'/></Link>
-            //     <Link href='/signIn'>Login</Link>
-            //     <Link href='/signUp'>
-            //         {image ? <Userimg image={true} src={image} alt='userImg'/> : <Userimg src='assets/userIconYellow.svg' alt='userImg'/>}
-            //     </Link>
-            // </div>
-
-
-
-        //     const HeaderBordy = styled.div`
-        //     width: 100%;
-        //     height: 100px;
-        //     background: linear-gradient(180deg, #1B0166 0%, #08001F 100%);
-        //     position: fixed;
-        //     top:0px;
-        
-        //     display: flex;
-        //     justify-content:center;
-        //     align-items: center;
-        
-        //     div{
-        //         display: flex;
-        //         justify-content:space-between;
-        //         align-items:center;
-        //         min-width:600px;
-        //         width: 100%;
-        //         max-width:1000px
-        //     }
-        
-        //     a{
-        //         color: white;
-        //         text-decoration:none;
-        //     }
-        // `;
-        

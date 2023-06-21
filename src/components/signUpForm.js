@@ -1,9 +1,14 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/router'
 import axios from "axios";
+import { AlertContext } from "../../contexts/alertContext";
+import Alert from "./alert";
+import AlertTWo from "./alertTwo"
 
 export default function SignUpForm(){
+
+    const { alertDisable, setAlertDisable, message, setMessage } = useContext(AlertContext);
 
     const [email, setEmail] = useState("")
     const [ password, setPassword] = useState("")
@@ -35,7 +40,11 @@ export default function SignUpForm(){
     async function createNewUser(event){
         event.preventDefault();
         const URL = process.env.NEXT_PUBLIC_HOST
-        if(password != confirmPassword) return console.log('senha não foi confirmada corretamente.');
+        if(password != confirmPassword){
+            setAlertDisable(false);
+            setMessage('Senha não foi confirmada corretamente');
+            return 0
+        };
         const body = {
             email,
             password,
@@ -47,7 +56,10 @@ export default function SignUpForm(){
             street
         }
         axios.post(`${URL}/signUp`,body)
-        .then(router.push('/signIn'))
+        .then(() => {
+            setMessage('Sua conta foi cadastrada com sucesso. Gostaria de adicionar seus jogos agora?');
+            setAlertDisable(false);
+        })
         .catch((error) => console.log(error));
     }
 
@@ -56,28 +68,31 @@ export default function SignUpForm(){
     },[cep]);
 
     return(
-        <Form onSubmit={createNewUser}>
-            <h2>Crie sua conta</h2>
-            <input disabled={loading} type="email" required value={email} onChange={e=> setEmail(e.target.value)}  placeholder="email"/>
-            <input disabled={loading} type="password" required value={password} onChange={e=> setPassword(e.target.value)} placeholder="senha" />
-            <input disabled={loading} type="password" required value={confirmPassword} onChange={e=> setConfirmPassword(e.target.value)} placeholder="confirme a senha" />
-            <input disabled={loading} type="text" value={name} onChange={e=> setName(e.target.value)} placeholder="nome" required/>
-            <input disabled={loading} type="text" value={phone} onChange={e=> setPhone(e.target.value)} placeholder="celular" required/>
-            <input disabled={loading} type="text" value={image} onChange={e=> setImage(e.target.value)}  placeholder="foto" required/>
-            <div>
-                <input disabled={loading} type="text" value={cep} onChange={e=> setCep(e.target.value)}  placeholder="cep"/>
-                <input disabled={loading} type="text" value={state} onChange={e=> setState(e.target.value)}  placeholder="state" required/>
-            </div>
-            <input disabled={loading} type="text" value={city} onChange={e=> setCity(e.target.value)}  placeholder="city" required/>
-            <input disabled={loading} type="text" value={street} onChange={e=> setStreet(e.target.value)}  placeholder="street" required/>
-            <button data-text="singup-btn" disabled={loading} type="submit">{loading ? <img src="assets/loading.svg" alt="loading"/> : "Cadastrar" }</button>
-        </Form>
+        <>
+            {message == 'Senha não foi confirmada corretamente' ? <Alert/> : <AlertTWo/>}
+            <Form onSubmit={createNewUser}>
+                <h2>Crie sua conta</h2>
+                <input disabled={loading} type="email" required value={email} onChange={e=> setEmail(e.target.value)}  placeholder="email"/>
+                <input disabled={loading} type="password" required value={password} onChange={e=> setPassword(e.target.value)} placeholder="senha" />
+                <input disabled={loading} type="password" required value={confirmPassword} onChange={e=> setConfirmPassword(e.target.value)} placeholder="confirme a senha" />
+                <input disabled={loading} type="text" value={name} onChange={e=> setName(e.target.value)} placeholder="nome" required/>
+                <input disabled={loading} type="text" value={phone} onChange={e=> setPhone(e.target.value)} placeholder="celular" required/>
+                <input disabled={loading} type="text" value={image} onChange={e=> setImage(e.target.value)}  placeholder="foto" required/>
+                <div>
+                    <input disabled={loading} type="text" value={cep} onChange={e=> setCep(e.target.value)}  placeholder="cep"/>
+                    <input disabled={loading} type="text" value={state} onChange={e=> setState(e.target.value)}  placeholder="state" required/>
+                </div>
+                <input disabled={loading} type="text" value={city} onChange={e=> setCity(e.target.value)}  placeholder="city" required/>
+                <input disabled={loading} type="text" value={street} onChange={e=> setStreet(e.target.value)}  placeholder="street" required/>
+                <button disabled={loading} type="submit">{loading ? <img src="assets/loading.svg" alt="loading"/> : "Cadastrar" }</button>
+            </Form>
+        </>
     )
 }
 
-const Form = styled.form`
+export const Form = styled.form`
     width: 357px;
-    height: 510px;
+    height: 110%;
     background: #140A2F;
     border-radius:8px;
     padding:40px;
