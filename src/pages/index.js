@@ -81,7 +81,9 @@ export const Screen = styled.div`
 
 const GamesDiv = styled.div`
   width: 100%;
-  height: 100vh;
+  min-width: 375px;
+  max-width: 800px;
+  height: 100%;
   display: flex;
   justify-content:center;
   flex-wrap: wrap;

@@ -58,7 +58,7 @@ const GameBody = styled.div`
     background: white;
     margin: 15px;
     box-shadow: drop-shadow(2px 4px 2px rgba(0, 0, 0, 0.1));
-    transition: all linear .2s;
+    transition: all linear .1s;
 
     *{
         transition: all linear .1s;
@@ -121,6 +121,6 @@ const GameBody = styled.div`
     }
 
     &:hover{
-        margin: 25px 25px 35px 25px;
+        margin: 10px 17px 15px 17px;
     }
 `
