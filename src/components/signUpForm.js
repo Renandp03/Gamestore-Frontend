@@ -97,7 +97,7 @@ export const Form = styled.form`
     border-radius:8px;
     padding:40px;
     box-sizing:borde-box;
-    margin: 60px;
+    margin: 5px 0px 60px 0px;
 
     display: flex;
     flex-direction:column;

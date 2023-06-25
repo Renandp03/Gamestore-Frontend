@@ -2,28 +2,45 @@ import styled from "styled-components";
 import { Screen } from "..";
 import Header from '@/components/header'
 import { TokenContext } from "../../../contexts/tokenContext";
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
 import Head from 'next/head'
+import Game from "@/components/game";
 
 
-export default function UserPage(props){
+export default function UserPage(){
 
-    const { userId } = props;
-    const { token,image } = useContext(TokenContext);
-    const [userInfo, setUserInfo] = useState({})
+    const router = useRouter();
+    const { id } = router.query;
+    const userId = Number(id);
+    console.log(id, typeof id, userId)
+    const [userInfo, setUserInfo] = useState({});
 
-    async function GetUser(){
+    async function getUser(){
+        const token = JSON.parse(localStorage.getItem("token"));
         const config = {
             headers:{
                 Authorization: `Bearer ${token}`
             }
         }
+       
         const URL = process.env.NEXT_PUBLIC_HOST;
-        axios.get(`${URL}/users/${userId}`,config)
-        .then((res) => setUserInfo(res.data))
-        .catch((err) => console.log(err));
+        await axios.get(`${URL}/users/${userId}`,config)
+        .then((res) => {
+            console.log(res.data);
+            setUserInfo(res.data);
+        })
+        .catch((err) => console.log(err.response.data));
     }
+
+    useEffect(() => { getUser()}, [])
+
+    const { name, phone, image } = userInfo;
+    const games = userInfo.games || [];
+    const city = userInfo.address?.city.name;
+
+
     return(
         <>
             <Head>
@@ -34,30 +51,140 @@ export default function UserPage(props){
             </Head>
             <Header/>
             <Screen>
-                <UserPerfil>
-                    <img src={image}/>
-                </UserPerfil>
+               
+                    <UserPerfil>
+                        <div className="perfil">
+                            <h1>{userInfo.name}</h1>
+                            <img src={userInfo.image}/>
+                        </div>
+                        <div className="contacts">
+                            <h2>Email:</h2>
+                            <p>{userInfo.email}</p>
+                            <h2>Celular:</h2>
+                            <p>{userInfo.phone}</p>
+                            <h2>Cidade:</h2>
+                            <p>{city}</p>
+                        </div>
+                    </UserPerfil>
+                    <GamesSpace>
+                        {
+                            games.length > 0 ?
+                            <>
+                                <h1>Jogos disponíveis</h1>
+                                {games.map((g) =>
+                
+                                    <Game 
+                                        key={g.id}
+                                        id={g.id}
+                                        name={g.name}
+                                        image={g.image}
+                                        console={g.consoles.name}
+                                        userId={userId}
+                                        userImg={image}/>
+                                )}
+                            </> :
+                            <h1>{name} não possui jogos ainda.</h1>
+                        }
+                    </GamesSpace>
             </Screen>
         </>
     )
 };
 
 const UserPerfil = styled.div`
-    display: flex;
-    width: 400px;
+    width: 300px;
     height: 400px;
     border-radius:8px;
-    background: white;
+    background: #fff;
     margin: 30px 0px;
-    position: relative;
+    padding: 15px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 100px;
+    left: 90px;
 
-    img{
-        position: absolute;
-        top:10px;
-        left: 10px;
-        width: 50px;
-        height: 50px;
-        border-radius:50px;
+    .perfil{
+        
+        height: 100px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        img{
+        
+            width: 100px;
+            height: 100px;
+            border: 5px solid yellow;
+            border-radius:100px;
+            object-fit:cover;
+            margin: 5px;
+        }
+
+        h1{
+            font-size: 38px;
+            color: #444;
+            font-weight: 700;
+            flex-wrap:wrap;
+            max-width: 200px;
+        }
     }
+
+    .contacts{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        h2{
+            font-size: 18px;
+            color: #555;
+            font-weight: 500;
+            flex-wrap:wrap;
+            max-width: 50px;
+            margin-bottom: 2px;
+        }
+        p{
+            font-size: 14px;
+            color: #777;
+            font-weight: 400;
+            flex-wrap:wrap;
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+    }
+    
+`
+const Columns = styled.div`
+    display: flex;
 `
 
+const GamesSpace = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    margin: 30px 0px 100px 500px;
+
+    width: 500px;
+    height: auto;
+
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 35px 0px;
+    box-sizing: border-box;
+    
+    h1{
+        font-size: 30px;
+        color: white;
+        position: absolute;
+        top: 0px;
+        left: 15px;
+
+    }
+
+    h2{
+        font-size: 30px;
+        color: white;
+        text-align: center;
+
+    }
+    
+
+`

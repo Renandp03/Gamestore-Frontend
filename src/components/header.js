@@ -2,17 +2,22 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import SearchBar from './searchBar';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'
 import { TokenContext } from '../../contexts/tokenContext';
 
 export default function Header(){
 
     const [token, setToken] = useState('');
     const [image, setImage] = useState('');
+    const [userId, setUserId] = useState('');
     const [clicked,setClicked] = useState(false);
+
+    const router = useRouter();
 
     useEffect(() => {
         const localStorageToken = JSON.parse(localStorage.token);
         const localStorageImage = JSON.parse(localStorage.image);
+        const localStorageUserId = JSON.parse(localStorage.userId);
 
         if (localStorageToken) {
             setToken(localStorageToken);
@@ -21,11 +26,23 @@ export default function Header(){
         };
         if(localStorageImage){
             setImage(localStorageImage);
-        }else{console.log('imagem não encontrada')}
+        }else{console.log('imagem não encontrada')};
+        if(localStorageUserId){
+            setUserId(localStorageUserId);
+        }else{console.log('imagem não encontrada')};
     }, []);
 
     function click(){
         setClicked(!clicked);
+    }
+
+    function logout(){
+		localStorage.setItem("token", JSON.stringify(''));
+        localStorage.setItem("image", JSON.stringify(''));
+        setToken('');
+        setImage('');
+        router.push('/')
+
     }
 
 
@@ -37,7 +54,7 @@ export default function Header(){
                     {token ? 
                     <>
                         <img onClick={click}  className='arrow' src='../../assets/arrowExpandMore.svg' alt='arrow'/>
-                        <div clicked={String(clicked)}><p>Logout</p></div>
+                        <div clicked={String(clicked)} onClick={logout}><p>Logout</p></div>
                     </> 
                     : 
                     <>
@@ -45,7 +62,7 @@ export default function Header(){
                         <Link href='/signUp'><button>signUp</button></Link>
                     </>}
                    
-                    {image ? <Link href={'/createGame'}><Userimg image={true} src={image} alt='userImg'/></Link> : 
+                    {image ? <Link href={`/user/${userId}`}><Userimg image={true} src={image} alt='userImg'/></Link> : 
                      <Link href={'/'}><Userimg src='../../assets/userIconYellow.svg' alt='genericImage'/></Link>
                     }
                 </AuthMenu>
@@ -99,6 +116,7 @@ const AuthMenu = styled.div`
         width: 30px;
         transform: ${props => props.children[0].props.children[1].props.clicked == 'true' ? 'rotate(180deg)' : ''};
         transition: all linear .1s;
+        cursor: pointer;
     }
     
 
@@ -110,6 +128,22 @@ const AuthMenu = styled.div`
          &:hover{
              color: #fee204;
          }
+    }
+
+    button{
+        width: 75px;
+        height: 35px;
+        color #fee204;
+        background: none;
+        border-radius: 8px;
+        border: 2px solid #fee204;
+        font-size: 16px;
+        transition: all linear .2s;
+        cursor:pointer;
+
+         &:hover{
+            border: 2px solid #FFB800;
+        }
     }
 
     div{
@@ -128,6 +162,7 @@ const AuthMenu = styled.div`
         background: ${props => ( props.children[0].props.children[1].props.clicked == 'true' ? '#140A2F' : '#655691')};;
         z-index: -1;
         transition: all linear .1s;
+        cursor: pointer;
 
 
 
@@ -148,5 +183,77 @@ const Userimg = styled.img`
 
     border-radius:80px;
     object-fit:cover;
-    border: ${props => props.image ? '3px solid #fee204' : console.log(props)};
+    border: ${props => props.image ? '3px solid #fee204' : 'none'};
 `;
+
+
+// const HeaderBordy = styled.div`
+//     width: 100%;
+//     height: 100px;
+//     background: linear-gradient(180deg, #1B0166 0%, #08001F 100%);
+//     position: fixed;
+//     top:0px;
+//     z-index:5;
+
+//     display: flex;
+//     justify-content:center;
+//     align-items: center;
+
+//     *{
+//         transition: all easy .2s;
+//     }
+
+//     .space{
+//         display: flex;
+//         justify-content:space-between;
+//         width: 90%;
+//         min-width: 375px;
+//         max-width: 1000px
+//     }
+
+//     a{
+//         color: white;
+//         text-decoration:none;
+//         font-size: 16px;
+
+//         &:hover{
+//             color: #fee204;
+//         }
+//     }
+// `;
+
+// const Logoimg = styled.img`
+//     width: 200px;
+// `;
+
+// const AuthMenu = styled.div`
+//     display: flex;
+//     justify-content: space-between;
+//     align-items:center;
+//     width: 200px;
+//     height: 40px;
+//     position: relative;
+
+//     button{
+//         width: 75px;
+//         height: 35px;
+//         color #fee204;
+//         background: none;
+//         border-radius: 8px;
+//         border: 2px solid #fee204;
+//         font-size: 16px;
+//         transition: all linear .2s;
+//         cursor:pointer;
+
+//          &:hover{
+//             border: 2px solid #FFB800;
+//         }
+//     }
+
+//     .arrow{
+        
+//     }
+// `
+    
+
+

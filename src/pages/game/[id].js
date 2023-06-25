@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 
 export default function gamePage(){
     const router = useRouter()
-    const { id } = router.query
+    const { id } = router.query;
 
     return(
         <>

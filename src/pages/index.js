@@ -2,23 +2,42 @@ import Head from 'next/head'
 import styled from 'styled-components';
 import Header from '@/components/header'
 import { useState, useEffect, useContext } from 'react';
-import { AlertContext } from '../../contexts/alertContext';
-import { useRouter } from 'next/router';
+import { TokenContext } from '../../contexts/tokenContext';
 import axios from 'axios';
 import Game from '@/components/game';
 import Alert from '@/components/alert';
-import Link from 'next/link';
 
 
 export default function Home() {
 
   const [games, setGames] = useState([]);
+  const { setToken, setUserId, setFavorites } = useContext(TokenContext);
 
   async function renderPage(){
+    
+    const token = JSON.parse(localStorage.getItem("token"));
+    setToken(JSON.parse(localStorage.getItem("token")));
+    const userId = JSON.parse(localStorage.getItem("userId"));
+    setUserId(JSON.parse(localStorage.getItem("userId")));
+
     const URL = process.env.NEXT_PUBLIC_HOST
     axios.get(`${URL}/games`,)
       .then((res) => {
         setGames(res.data);
+          const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            };
+            axios.get(`${URL}/favorites/get/${userId}`,config)
+            .then((response) => {
+              localStorage.setItem('favorites',JSON.stringify(response.data));
+              setFavorites(response.data);
+            })
+            .catch((err) =>{ 
+              if(err.response.data.name == 'notFound'){
+                  console.log('Nenhum favorites encontrado');
+              }});
       })
       .catch((err) => console.log(err.message));
   }
@@ -47,7 +66,7 @@ export default function Home() {
                 id={g.id}
                 name={g.name}
                 image={g.image}
-                consoleId={g.consoleId}
+                console={g.consoles.name}
                 userId={g.users.id}
                 userImg={g.users.image}/>
             )}
@@ -71,12 +90,7 @@ export const Screen = styled.div`
   margin-top: 100px;
 
 
-  h1{
-    font-size: 64px;
-    color: white;
-    margin: 10px 15px;
-    align-self:flex-start;
-  }
+  
 `
 
 const GamesDiv = styled.div`
