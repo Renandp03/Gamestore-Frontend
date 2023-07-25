@@ -31,6 +31,10 @@ export default function Game(props){
                 if(err.response.data.name == 'unauthorizedError'){
                     setMessage('É preciso fazer login na Gamestore antes de adicionar um jogo a lista de desejos');
                     setAlertDisable(false);
+                };
+                if(err.response.data.name == 'badRequestError'){
+                    setMessage('Esse jogo é seu.');
+                    setAlertDisable(false);
                 }
             });
 

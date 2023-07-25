@@ -2,11 +2,28 @@ import styled from "styled-components"
 import Head from 'next/head'
 import { Screen } from ".."
 import Header from "@/components/header"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
+import axios from "axios"
 
 export default function gamePage(){
     const router = useRouter()
     const { id } = router.query;
+    const [ gameInfo, setGameInfo ] = useState({});
+
+
+    function getGameInfo(){
+        if(!id) return undefined;
+        const URL = process.env.NEXT_PUBLIC_HOST;
+        axios.get(`${URL}/games/${id}`)
+        .then((res) => {
+            setGameInfo(res.data);
+        })
+        .catch((err) => {console.log(err)})
+    }
+
+
+    useEffect(() => {getGameInfo()},[id])
 
     return(
         <>
@@ -19,9 +36,85 @@ export default function gamePage(){
         <main>
             <Header/>
             <Screen>
-                <h1>Estou na pagina do produto: {id}</h1>
+                <GamePerfil>
+                <div className="perfil">
+                            <h1>{gameInfo.name}</h1>
+                            <img src={gameInfo.image}/>
+                        </div>
+                        <div className="contacts">
+                            <h2>Email:</h2>
+                            <p></p>
+                            <h2>Celular:</h2>
+                            <p></p>
+                            <h2>Cidade:</h2>
+                            <p></p>
+                        </div>
+                </GamePerfil>
             </Screen>
         </main>
        </>
     )
 }
+
+
+const GamePerfil = styled.div`
+    width: 300px;
+    height: 400px;
+    border-radius:8px;
+    background: #fff;
+    margin: 30px 0px;
+    padding: 15px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 100px;
+    left: 10%;
+
+    .perfil{
+        
+        height: 100px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        img{
+        
+            width: 100px;
+            height: 100px;
+            border: 5px solid yellow;
+            border-radius:100px;
+            object-fit:cover;
+            margin: 5px;
+        }
+
+        h1{
+            font-size: 38px;
+            color: #444;
+            font-weight: 700;
+            flex-wrap:wrap;
+            max-width: 200px;
+        }
+    }
+
+    .contacts{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        h2{
+            font-size: 18px;
+            color: #555;
+            font-weight: 500;
+            flex-wrap:wrap;
+            max-width: 50px;
+            margin-bottom: 2px;
+        }
+        p{
+            font-size: 14px;
+            color: #777;
+            font-weight: 400;
+            flex-wrap:wrap;
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+    }
+    
+`

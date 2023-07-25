@@ -1,26 +1,21 @@
 import styled from "styled-components";
-import { Screen } from "..";
+import { Screen } from ".";
 import Header from '@/components/header'
-import { TokenContext } from "../../../contexts/tokenContext";
+import { TokenContext } from "../../contexts/tokenContext";
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Head from 'next/head'
-import Game from "@/components/game";
 import UserGame from "@/components/userGame";
 
 
 export default function UserPage(){
 
     const router = useRouter();
-    const { id } = router.query;
-    const userId = Number(id);
     const [userInfo, setUserInfo] = useState({});
     const [selectedGame, setSelectedGame] = useState();
 
-    async function getUser(){
-        if(!id) return undefined;
-        const token = JSON.parse(localStorage.getItem("token"));
+    async function getUser(userId,token){
         const config = {
             headers:{
                 Authorization: `Bearer ${token}`
@@ -35,7 +30,11 @@ export default function UserPage(){
         .catch((err) => console.log(err.response.data));
     }
 
-    useEffect(() => { getUser()}, [id])
+    useEffect(() => {
+        const userId = JSON.parse(localStorage.getItem("userId"));
+        const token = JSON.parse(localStorage.getItem("token"));
+        getUser(userId,token);
+    }, [])
 
     const { name, phone, image } = userInfo;
     const games = userInfo.games || [];
@@ -62,7 +61,7 @@ export default function UserPage(){
                             <h2>Email:</h2>
                             <p>{userInfo.email}</p>
                             <h2>Celular:</h2>
-                            <p>{userInfo.phone}</p>
+                            <p>{phone}</p>
                             <h2>Cidade:</h2>
                             <p>{city}</p>
                         </div>
@@ -84,9 +83,9 @@ export default function UserPage(){
                                         />
                                 )}
                             </> :
-                            <h1>{name} não possui jogos ainda.</h1>
+                            <h1>Você não possui jogos ainda.</h1>
                         }
-                        <button>Oferecer troca</button>
+                        <button>adicionar jogo</button>
                     </GamesSpace>
             </Screen>
         </>

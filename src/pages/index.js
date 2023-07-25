@@ -11,38 +11,41 @@ import Alert from '@/components/alert';
 export default function Home() {
 
   const [games, setGames] = useState([]);
-  const { setToken, setUserId, setFavorites } = useContext(TokenContext);
+  const { token, setToken, setUserId, setFavorites } = useContext(TokenContext);
 
   async function renderPage(){
     
-    const token = JSON.parse(localStorage.getItem("token"));
+    const tokenIndex = JSON.parse(localStorage.getItem("token"));
     setToken(JSON.parse(localStorage.getItem("token")));
     const userId = JSON.parse(localStorage.getItem("userId"));
     setUserId(JSON.parse(localStorage.getItem("userId")));
 
     const URL = process.env.NEXT_PUBLIC_HOST
-    axios.get(`${URL}/games`,)
-      .then((res) => {
-        setGames(res.data);
-          const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            };
-            axios.get(`${URL}/favorites/get/${userId}`,config)
-            .then((response) => {
-              localStorage.setItem('favorites',JSON.stringify(response.data));
-              setFavorites(response.data);
-            })
-            .catch((err) =>{ 
-              if(err.response.data.name == 'notFound'){
-                  console.log('Nenhum favorites encontrado');
-              }});
-      })
-      .catch((err) => console.log(err.message));
+      axios.get(`${URL}/games`,)
+        .then((res) => {
+          setGames(res.data);
+        })
+        .catch((err) => console.log(err.message));
+    if(tokenIndex){
+      const config = {
+        headers: {
+            Authorization: `Bearer ${tokenIndex}`,
+        }
+      };
+      axios.get(`${URL}/favorites/get/${userId}`,config)
+              .then((response) => {
+                localStorage.setItem('favorites',JSON.stringify(response.data));
+                setFavorites(response.data);
+              })
+              .catch((err) =>{ 
+                if(err.response.data.name == 'notFound'){
+                    console.log('Nenhum favorites encontrado');
+                }});
+    }
+    
   }
 
-  useEffect(() => {renderPage()},[])
+  useEffect(() => {renderPage()},[token])
 
   return (
     <>
@@ -56,7 +59,7 @@ export default function Home() {
         <Alert/>
         <Header/>
         <Screen>
-          <h1>Home</h1>
+          <h1 className='title'>Jogos em alta:</h1>
           <GamesDiv>
           
             {games.map((g) =>
@@ -89,6 +92,13 @@ export const Screen = styled.div`
   background: linear-gradient(180deg, #1B0166 0%, #08001F 100%);
   margin-top: 100px;
 
+
+  .title{
+    color: white;
+    font-size: 36px;
+    margin: 10px 10%;
+    align-self: flex-start;
+  }
 
   
 `
