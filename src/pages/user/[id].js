@@ -1,12 +1,10 @@
 import styled from "styled-components";
 import { Screen } from "..";
 import Header from '@/components/header'
-import { TokenContext } from "../../../contexts/tokenContext";
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Head from 'next/head'
-import Game from "@/components/game";
 import UserGame from "@/components/userGame";
 
 

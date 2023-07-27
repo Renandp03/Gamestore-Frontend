@@ -7,11 +7,11 @@ import { TokenContext } from "../../contexts/tokenContext";
 import { Form } from "./signUpForm";
 
 export default function SignInForm(){
-    const { token, setToken, image, setImage, userId, setUserId, setFavorites } = useContext(TokenContext);
+    const {setToken, setImage, setUserId} = useContext(TokenContext);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
 
     const router = useRouter();
 
@@ -43,7 +43,7 @@ export default function SignInForm(){
                 <input disabled={loading} type="email" required value={email} onChange={e=> setEmail(e.target.value)}  placeholder="email"/>
                 <input disabled={loading} type="password" required value={password} onChange={e=> setPassword(e.target.value)} placeholder="senha" />
                 
-                <button data-text="singup-btn" disabled={loading} type="submit">{loading ? <img src="assets/loading.svg" alt="loading"/> : "Login" }</button>
+                <button disabled={loading} type="submit">{loading ? <img src="assets/loading.svg" alt="loading"/> : "Login" }</button>
             </Form>
         </Screen>
     )

@@ -1,11 +1,14 @@
 import styled from 'styled-components'
 import Link from 'next/link'
-import SearchBar from './searchBar';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router'
+import { AlertContext } from '../../contexts/alertContext';
 import { TokenContext } from '../../contexts/tokenContext';
 
 export default function Header(){
+
+    const {setMessage} = useContext(AlertContext);
+    const {setFavorites} = useContext(TokenContext);
 
     const [token, setToken] = useState('');
     const [image, setImage] = useState('');
@@ -21,15 +24,13 @@ export default function Header(){
 
         if (localStorageToken) {
             setToken(localStorageToken);
-        } else {
-            console.log('Token não encontrado');
-        };
+        }
         if(localStorageImage){
             setImage(localStorageImage);
-        }else{console.log('imagem não encontrada')};
+        }
         if(localStorageUserId){
             setUserId(localStorageUserId);
-        }else{console.log('userId não encontrado')};
+        }
     }, []);
 
     function click(){
@@ -43,8 +44,9 @@ export default function Header(){
         setToken('');
         setImage('');
         setUserId(0);
-        router.push('/')
-
+        setFavorites([])
+        router.push('/');
+        setTimeout(() => location.reload(), 1000)
     }
 
 

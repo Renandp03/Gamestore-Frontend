@@ -11,7 +11,7 @@ import Alert from '@/components/alert';
 export default function Home() {
 
   const [games, setGames] = useState([]);
-  const { token, setToken, setUserId, setFavorites } = useContext(TokenContext);
+  const {setToken, userId,setUserId, setFavorites } = useContext(TokenContext);
 
   async function renderPage(){
     
@@ -26,7 +26,7 @@ export default function Home() {
           setGames(res.data);
         })
         .catch((err) => console.log(err.message));
-    if(tokenIndex){
+    if(tokenIndex !== ''){
       const config = {
         headers: {
             Authorization: `Bearer ${tokenIndex}`,
@@ -41,11 +41,11 @@ export default function Home() {
                 if(err.response.data.name == 'notFound'){
                     console.log('Nenhum favorites encontrado');
                 }});
-    }
+    }else setFavorites([])
     
   }
 
-  useEffect(() => {renderPage()},[token])
+  useEffect(() => {renderPage()},[userId])
 
   return (
     <>
@@ -69,7 +69,7 @@ export default function Home() {
                 id={g.id}
                 name={g.name}
                 image={g.image}
-                console={g.consoles.name}
+                plataform={g.consoles.name}
                 userId={g.users.id}
                 userImg={g.users.image}/>
             )}

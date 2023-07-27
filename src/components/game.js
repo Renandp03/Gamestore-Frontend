@@ -2,19 +2,21 @@ import styled from "styled-components";
 import { useState, useContext, useEffect } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import { AlertContext } from "../../contexts/alertContext";
+import { useRouter } from 'next/router'
 import axios from "axios";
 import Link from "next/link";
 
 export default function Game(props){
-    const { id, name, image, console, userImg, userId } = props;
+    const { id, name, image, plataform, userImg, userId } = props;
     const { favorites, token } = useContext(TokenContext);
-   const { alertDisable, setAlertDisable, setMessage } = useContext(AlertContext);
+   const { setAlertDisable, setMessage } = useContext(AlertContext);
     const [liked, setLiked] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         const isLiked = favorites.filter( f => f.gameId == id);
         if(isLiked.length > 0){setLiked(true)}
-    }, []);
+    }, [favorites]);
 
 
     function like(){
@@ -41,11 +43,18 @@ export default function Game(props){
         
     }
 
+    function GoToUserPage(userId){
+        if(token != ''){
+            router.push(`user/${userId}`);
+        } 
+        else(console.log('Não autorizado'))
+    }
+
     return(
-        <GameBody console={console}>
+        <GameBody plataform={plataform}>
             <Link href={`/game/${id}`}><img src={image} alt={name}/></Link>
             <div>
-                <img src={userImg} alt={userId}/>
+                <img src={userImg} alt={userId} onClick={() => GoToUserPage(userId)}/>
                 {name.length > 8 ? 
                 <p>{name.substring(0,8) + '...'}</p> : 
                 <p>{name}</p>}
@@ -81,9 +90,9 @@ const GameBody = styled.div`
         border-radius: 0px 0px 8px 8px;
         position: relative;
         background: ${
-        props => (props.console).includes('Playstation') ? 'linear-gradient(134.59deg, #3565DF 15.4%, #0AB6ED 100%);' :
-        (props.console).includes('Xbox') ? 'linear-gradient(134.59deg, #25AE19 15.4%, #22EB2A 100%);' :
-        (props.console).includes('Nintendo') ? 'linear-gradient(134.59deg, #F32764 15.4%, #DA0000 100%);' :
+        props => (props.plataform).includes('Playstation') ? 'linear-gradient(134.59deg, #3565DF 15.4%, #0AB6ED 100%);' :
+        (props.plataform).includes('Xbox') ? 'linear-gradient(134.59deg, #25AE19 15.4%, #22EB2A 100%);' :
+        (props.plataform).includes('Nintendo') ? 'linear-gradient(134.59deg, #F32764 15.4%, #DA0000 100%);' :
         'linear-gradient(135deg, #F3BA27 0%, #FFE500 100%);'
         };
 
