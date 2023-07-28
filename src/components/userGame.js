@@ -2,11 +2,21 @@ import styled from "styled-components"
 
 export default function UserGame(props){
 
-    const { id ,name, image, selectedGame, setSelectedGame } = props;
+    const { id ,name, image, selectedGame, setSelectedGame, setDisabled } = props;
+
+    function selectGame(){
+       if(selectedGame == id){
+        setSelectedGame(0);
+        setDisabled(false);
+       }else{
+        setSelectedGame(id);
+        setDisabled(false);
+    }
+    }
 
     return(
         <GameStyled
-        onClick={() => {setSelectedGame(id)}}
+        onClick={() => {selectGame()}}
         id={id}
         selectedGame={selectedGame}
         src={image} 
@@ -21,6 +31,7 @@ const GameStyled = styled.img`
     border-radius: 8px;
     margin: 15px;
     object-fit:cover;
+    cursor: pointer;
 
     transition: all linear .1s;
 

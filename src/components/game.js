@@ -8,6 +8,7 @@ import Link from "next/link";
 
 export default function Game(props){
     const { id, name, image, plataform, userImg, userId } = props;
+    const {userId: myId} = useContext(TokenContext);
     const { favorites, token } = useContext(TokenContext);
    const { setAlertDisable, setMessage } = useContext(AlertContext);
     const [liked, setLiked] = useState(false);
@@ -44,9 +45,10 @@ export default function Game(props){
     }
 
     function GoToUserPage(userId){
-        if(token != ''){
+        if(token != '' && userId != myId){
             router.push(`user/${userId}`);
         } 
+        else if(userId == myId){router.push('/me')}
         else(console.log('Não autorizado'))
     }
 

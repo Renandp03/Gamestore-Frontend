@@ -15,6 +15,7 @@ export default function UserPage(){
     const userId = Number(id);
     const [userInfo, setUserInfo] = useState({});
     const [selectedGame, setSelectedGame] = useState();
+    const [disabled, setDisabled] = useState(true);
 
     async function getUser(){
         if(!id) return undefined;
@@ -35,7 +36,7 @@ export default function UserPage(){
 
     useEffect(() => { getUser()}, [id])
 
-    const { name, phone, image } = userInfo;
+    const { name, email, phone, image } = userInfo;
     const games = userInfo.games || [];
     const city = userInfo.address?.city.name;
 
@@ -53,14 +54,14 @@ export default function UserPage(){
                
                     <UserPerfil>
                         <div className="perfil">
-                            <h1>{userInfo.name}</h1>
-                            <img src={userInfo.image}/>
+                            <h1>{name}</h1>
+                            <img src={image}/>
                         </div>
                         <div className="contacts">
                             <h2>Email:</h2>
-                            <p>{userInfo.email}</p>
+                            <p>{email}</p>
                             <h2>Celular:</h2>
-                            <p>{userInfo.phone}</p>
+                            <p>{phone}</p>
                             <h2>Cidade:</h2>
                             <p>{city}</p>
                         </div>
@@ -79,12 +80,13 @@ export default function UserPage(){
                                         image={g.image}
                                         selectedGame={selectedGame}
                                         setSelectedGame={setSelectedGame}
+                                        setDisabled={setDisabled}
                                         />
                                 )}
                             </> :
                             <h1>{name} não possui jogos ainda.</h1>
                         }
-                        <button>Oferecer troca</button>
+                        <button disabled={disabled} isDisabled={disabled}>Oferecer troca</button>
                     </GamesSpace>
             </Screen>
         </>
