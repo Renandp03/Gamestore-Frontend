@@ -16,7 +16,7 @@ export async function GetUserFavorites(){
     };
 
 
-    axios.get(`${URL}/favorites/get/${res.data.userId}`,config)
+    axios.get(`${URL}/favorites/${res.data.userId}`,config)
     .then((res) => {
         setFavorites(res.data);
     })

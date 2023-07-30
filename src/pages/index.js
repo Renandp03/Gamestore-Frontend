@@ -32,7 +32,7 @@ export default function Home() {
             Authorization: `Bearer ${tokenIndex}`,
         }
       };
-      axios.get(`${URL}/favorites/get/${userId}`,config)
+      axios.get(`${URL}/favorites/${userId}`,config)
               .then((response) => {
                 localStorage.setItem('favorites',JSON.stringify(response.data));
                 setFavorites(response.data);
@@ -69,7 +69,7 @@ export default function Home() {
                 id={g.id}
                 name={g.name}
                 image={g.image}
-                plataform={g.consoles.name}
+                platform={g.consoles.name}
                 userId={g.users.id}
                 userImg={g.users.image}/>
             )}

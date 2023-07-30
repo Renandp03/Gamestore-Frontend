@@ -7,7 +7,7 @@ import axios from "axios";
 import Link from "next/link";
 
 export default function Game(props){
-    const { id, name, image, plataform, userImg, userId } = props;
+    const { id, name, image, platform, userImg, userId } = props;
     const {userId: myId} = useContext(TokenContext);
     const { favorites, token } = useContext(TokenContext);
    const { setAlertDisable, setMessage } = useContext(AlertContext);
@@ -28,7 +28,7 @@ export default function Game(props){
             },
         };
 
-        axios.post(`${process.env.NEXT_PUBLIC_HOST}/favorites/post/${id}`,{},config)
+        axios.post(`${process.env.NEXT_PUBLIC_HOST}/favorites/${id}`,{},config)
             .then(() => { if(liked){setLiked(false)} else{setLiked(true)}; })
             .catch((err) => {
                 if(err.response.data.name == 'unauthorizedError'){
@@ -53,7 +53,7 @@ export default function Game(props){
     }
 
     return(
-        <GameBody plataform={plataform}>
+        <GameBody platform={platform}>
             <Link href={`/game/${id}`}><img src={image} alt={name}/></Link>
             <div>
                 <img src={userImg} alt={userId} onClick={() => GoToUserPage(userId)}/>
@@ -92,9 +92,9 @@ const GameBody = styled.div`
         border-radius: 0px 0px 8px 8px;
         position: relative;
         background: ${
-        props => (props.plataform).includes('Playstation') ? 'linear-gradient(134.59deg, #3565DF 15.4%, #0AB6ED 100%);' :
-        (props.plataform).includes('Xbox') ? 'linear-gradient(134.59deg, #25AE19 15.4%, #22EB2A 100%);' :
-        (props.plataform).includes('Nintendo') ? 'linear-gradient(134.59deg, #F32764 15.4%, #DA0000 100%);' :
+        props => (props.platform).includes('Playstation') ? 'linear-gradient(134.59deg, #3565DF 15.4%, #0AB6ED 100%);' :
+        (props.platform).includes('Xbox') ? 'linear-gradient(134.59deg, #25AE19 15.4%, #22EB2A 100%);' :
+        (props.platform).includes('Nintendo') ? 'linear-gradient(134.59deg, #F32764 15.4%, #DA0000 100%);' :
         'linear-gradient(135deg, #F3BA27 0%, #FFE500 100%);'
         };
 
