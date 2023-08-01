@@ -45,7 +45,11 @@ export default function gamePage(){
                     <GameInfo>
                         <p>Nome: <span>{name}</span></p>
                         <p>Console: <span>{platform}</span></p>
-                        <p>Proprietario: <span>{owner}</span></p>
+                        <p>Proprietario: <span>{owner.name}</span></p>
+                        <button>
+                            Oferecer troca 
+                            <img src="../../assets/right_arrow_icon.svg" />
+                        </button>
                     </GameInfo>
                 </GameSpace>
             </Screen>
@@ -62,14 +66,29 @@ const GameSpace = styled.div`
 
 const GameInfo = styled.div`
     color: white;
+    padding: 10px 20px;
 
     p{
         font-size: 18px;
         font-weight: 500;
-        margin: 10px 20px;
+        margin-bottom: 15px;
     }
     span{
         font-size: 16px;
         font-weight: 400;
+    }
+    button{
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        color: #774801;
+        background: #FFBB12;
+        padding: 5px;
+        border:none;
+        border-radius: 8px;
+        img{
+            width:20px;
+            margin-left: 5px;
+        }
     }
 `
