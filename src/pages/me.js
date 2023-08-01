@@ -84,7 +84,7 @@ export default function UserPage(){
                             </> :
                             <h1>Você não possui jogos ainda.</h1>
                         }
-                        <button>adicionar jogo</button>
+                        <button onClick={() => router.push('/createGame')}>adicionar jogo</button>
                     </GamesSpace>
             </Screen>
         </>
