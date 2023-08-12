@@ -5,10 +5,12 @@ import axios from "axios";
 import { AlertContext } from "../../contexts/alertContext";
 import Alert from "./alert";
 import AlertTWo from "./alertTwo"
+import { TokenContext } from "../../contexts/tokenContext";
 
 export default function SignUpForm(){
 
     const { alertDisable, setAlertDisable, message, setMessage } = useContext(AlertContext);
+    const {setToken,setImage:setUserImage,setUserId} = useContext(TokenContext)
 
     const [email, setEmail] = useState("")
     const [ password, setPassword] = useState("")
@@ -56,7 +58,13 @@ export default function SignUpForm(){
             street
         }
         axios.post(`${URL}/signUp`,body)
-        .then(() => {
+        .then((res) => {
+            setToken(res.data.token);
+            localStorage.setItem('token',JSON.stringify(res.data.token));
+            setUserImage(res.data.image);
+            localStorage.setItem('image',JSON.stringify(res.data.image));
+            setUserId(res.data.userId);
+            localStorage.setItem('userId',JSON.stringify(res.data.userId));
             setMessage('Sua conta foi cadastrada com sucesso. Gostaria de adicionar seus jogos agora?');
             setAlertDisable(false);
         })

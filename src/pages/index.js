@@ -69,9 +69,9 @@ export default function Home() {
                 id={g.id}
                 name={g.name}
                 image={g.image}
-                platform={g.consoles.name}
-                userId={g.users.id}
-                userImg={g.users.image}/>
+                platform={g.platform.name}
+                userId={g.owner.id}
+                userImg={g.owner.image}/>
             )}
           </GamesDiv>
         </Screen>
