@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Link from 'next/link'
+import MobileMenu from './mobileMenu';
 import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router'
 import { AlertContext } from '../../contexts/alertContext';
@@ -58,7 +59,7 @@ export default function Header(){
                     {token ? 
                     <>
                         <img onClick={click}  className='arrow' src='../../assets/arrowExpandMore.svg' alt='arrow'/>
-                        <div clicked={String(clicked)} onClick={logout}><p>Logout</p></div>
+                        <div clicked={String(clicked)} disabre={clicked} onClick={logout}><p>Logout</p></div>
                     </> 
                     : 
                     <>
@@ -70,6 +71,7 @@ export default function Header(){
                      <Link href={'/'}><Userimg src='../../assets/userIconYellow.svg' alt='genericImage'/></Link>
                     }
                 </AuthMenu>
+                {/* <MobileMenu/> */}
 
             
         </HeaderBordy>
@@ -157,7 +159,7 @@ const AuthMenu = styled.div`
         border-radius: 0px 0px 8px 8px;
 
         position: absolute;
-        top: ${props => ( props.children[0].props.children[1].props.clicked == 'true' ? '74px' : '34px')};
+        top: ${props => ( props.children[0].props.children[1].props.clicked == 'true' ? '71px' : '24px')};
         left: 0px;
         
         display: flex;
@@ -177,6 +179,10 @@ const AuthMenu = styled.div`
             transition: all linear .1s;
 
         }
+    }
+
+    @media(max-width:600px){
+        display: none;
     }
 
 `

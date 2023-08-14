@@ -2,15 +2,17 @@ import styled from "styled-components"
 import Head from 'next/head'
 import { Screen } from ".."
 import Header from "@/components/header"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 import axios from "axios"
 import GamePerfil from "@/components/gamePerfil"
+import { TokenContext } from "../../../contexts/tokenContext"
 
 export default function gamePage(){
     const router = useRouter()
     const { id } = router.query;
-    const [ gameInfo, setGameInfo ] = useState({});
+    const [ gameInfo, setGameInfo ] = useState();
+    const {userId} = useContext(TokenContext);
 
 
     function getGameInfo(){
@@ -27,7 +29,11 @@ export default function gamePage(){
 
     useEffect(() => {getGameInfo()},[id])
 
+    if(!gameInfo) return(<><img svg='assets/loading1.svg' alt='carregando'/></>);
+
     const {name, image, owner, platform} = gameInfo;
+    console.log({owner,userId})
+
 
     return(
         <>
@@ -41,15 +47,16 @@ export default function gamePage(){
             <Header/>
             <Screen>
                 <GameSpace>
-                    <GamePerfil name={name} image={image} platform={platform}/>
+                    <GamePerfil name={name} image={image} platform={platform.name}/>
                     <GameInfo>
                         <p>Nome: <span>{name}</span></p>
-                        <p>Console: <span>{platform}</span></p>
+                        <p>Console: <span>{platform.name}</span></p>
                         <p>Proprietario: <span>{owner.name}</span></p>
+                       {owner.id !== userId &&  
                         <button>
                             Oferecer troca 
                             <img src="../../assets/right_arrow_icon.svg" />
-                        </button>
+                        </button>}
                     </GameInfo>
                 </GameSpace>
             </Screen>

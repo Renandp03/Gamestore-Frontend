@@ -49,7 +49,10 @@ export default function Game(props){
             router.push(`user/${userId}`);
         } 
         else if(userId == myId){router.push('/me')}
-        else(console.log('Não autorizado'))
+        else{
+            setMessage('Para visitar a página de um unuário é necessário estar logado.');
+            setAlertDisable(false);
+        }
     }
 
     return(
@@ -92,7 +95,7 @@ const GameBody = styled.div`
         border-radius: 0px 0px 8px 8px;
         position: relative;
         background: ${
-        props => (props.platform).includes('Playstation') ? 'linear-gradient(134.59deg, #3565DF 15.4%, #0AB6ED 100%);' :
+        props => (props.platform).includes('PlayStation') ? 'linear-gradient(134.59deg, #3565DF 15.4%, #0AB6ED 100%);' :
         (props.platform).includes('Xbox') ? 'linear-gradient(134.59deg, #25AE19 15.4%, #22EB2A 100%);' :
         (props.platform).includes('Nintendo') ? 'linear-gradient(134.59deg, #F32764 15.4%, #DA0000 100%);' :
         'linear-gradient(135deg, #F3BA27 0%, #FFE500 100%);'
