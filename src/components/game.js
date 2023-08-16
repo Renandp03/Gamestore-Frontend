@@ -87,6 +87,7 @@ const GameBody = styled.div`
         height: 218px;
         border-radius: 8px 8px 0px 0px;
         object-fit:cover;
+        cursor:pointer;
     }
 
     div{

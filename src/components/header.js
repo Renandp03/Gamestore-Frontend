@@ -71,7 +71,7 @@ export default function Header(){
                      <Link href={'/'}><Userimg src='../../assets/userIconYellow.svg' alt='genericImage'/></Link>
                     }
                 </AuthMenu>
-                {/* <MobileMenu/> */}
+                <MobileMenu/>
 
             
         </HeaderBordy>
