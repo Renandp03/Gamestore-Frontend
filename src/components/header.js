@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import MobileMenu from './mobileMenu';
+import Menu from './menu';
 import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router'
 import { AlertContext } from '../../contexts/alertContext';
@@ -9,11 +10,7 @@ import { TokenContext } from '../../contexts/tokenContext';
 export default function Header(){
 
     const {setMessage} = useContext(AlertContext);
-    const {setFavorites} = useContext(TokenContext);
-
-    const [token, setToken] = useState('');
-    const [image, setImage] = useState('');
-    const [userId, setUserId] = useState('');
+    const {token,setToken,image,setImage,setUserId,setFavorites} = useContext(TokenContext);
     const [clicked,setClicked] = useState(false);
 
     const router = useRouter();
@@ -71,7 +68,7 @@ export default function Header(){
                      <Link href={'/'}><Userimg src='../../assets/userIconYellow.svg' alt='genericImage'/></Link>
                     }
                 </AuthMenu>
-                <MobileMenu/>
+                <Menu/>
 
             
         </HeaderBordy>

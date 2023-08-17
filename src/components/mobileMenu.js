@@ -1,22 +1,45 @@
-import { useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router";
 import Link from 'next/link'
 import styled from "styled-components"
+import { TokenContext } from "../../contexts/tokenContext";
 
 export default function MobileMenu(){
 
+    const {image,setToken,setImage,setUserId} = useContext(TokenContext);
+    console.log(image);
     const [clicked,setClicked] = useState(false);
     const router = useRouter();
 
 
+
+    useEffect(() => {
+        const localStorageToken = JSON.parse(localStorage.token);
+        const localStorageImage = JSON.parse(localStorage.image);
+        const localStorageUserId = JSON.parse(localStorage.userId);
+
+        if (localStorageToken) {
+            setToken(localStorageToken);
+        }
+        if(localStorageImage){
+            setImage(localStorageImage);
+        }
+        if(localStorageUserId){
+            setUserId(localStorageUserId);
+        }
+    }, []);
+
+   
     function click(){
         setClicked(!clicked)
     }
 
     return(
         <MenuBory clicked={clicked}>
-            <img className="menu" src="assets/MobileMenu.svg" alt="menu" onClick={click}/>
-            <img src="assets/userIconYellow.svg" alt=""/>
+            <img src="assets/MobileMenu.svg" alt="menu" onClick={click}/>
+            
+            {image ? <img className="userImage" src={image} alt="onlineUser"/> :
+            <img src="assets/userIconYellow.svg" alt="offlineUser"/>}
             <div>
                 <Link href={'/signIn'}><button>login</button></Link>
                 <Link href={'/signUp'}><button>signUp</button></Link>
@@ -35,13 +58,20 @@ const MenuBory = styled.div`
     
     img{
         width: 34px;
+        height: 34px;
+        border-radius: 34px;
         cursor: pointer;
+        object-fit:cover;
         z-index:5;
     }
+    .userImage{
+        border: 3px solid yellow;
+    }
+
 
     div{
         position: absolute;
-        top: ${props => props.clicked ? '67px' : '-10px'};
+        top: ${props => props.clicked ? '70px' : '-10px'};
         left: 0px;
         transition: all linear .2s;
 
@@ -67,6 +97,10 @@ const MenuBory = styled.div`
         &:last-child{
             button{border-radius: 0px 0px 8px 8px;}
         }
+    }
+
+    @media(min-width:600px){
+        display: none;
     }
 
 `
