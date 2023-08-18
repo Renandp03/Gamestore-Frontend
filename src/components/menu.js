@@ -2,11 +2,13 @@ import { useContext, useState, useEffect } from "react"
 import Link from 'next/link'
 import styled from "styled-components"
 import { TokenContext } from "../../contexts/tokenContext";
+import { useRouter } from "next/router";
 
 export default function Menu(){
 
-    const {token,image,setToken,setImage,setUserId} = useContext(TokenContext);
+    const {token,image,setToken,setImage,setUserId,setFavorites} = useContext(TokenContext);
     const [clicked,setClicked] = useState(false);
+    const router = useRouter();
 
 
 
@@ -45,7 +47,15 @@ export default function Menu(){
 
     return(
         <MenuBory clicked={clicked}>
-            <img src="../../assets/MobileMenu.svg" alt="menu" onClick={click}/>
+            {token ? 
+            <>
+                <img className="arrow" src="../../assets/arrowExpandMore.svg" alt="menu" onClick={click}/>
+            </> : 
+            <>
+                <Link className='signIn' href='/signIn'>Login</Link>
+                <Link href='/signUp'><button className='signUp'>signUp</button></Link>
+                <img className='menuIcon' src="../../assets/MobileMenu.svg" alt="menu" onClick={click}/>
+            </>}
             
             {image ? <img className="userImage" src={image} alt="onlineUser"/> :
             <img src="assets/userIconYellow.svg" alt="offlineUser"/>}
@@ -55,8 +65,8 @@ export default function Menu(){
                 <button onClick={logout} className='logout'>logout</button>
                 </> :
                 <>
-                <Link href={'/signIn'}><button>login</button></Link>
-                <Link href={'/signUp'}><button>signUp</button></Link>
+                <Link className="offlineButton" href={'/signIn'}><button>login</button></Link>
+                <Link className="offlineButton" href={'/signUp'}><button>signUp</button></Link>
                 </>}
             </div>
         </MenuBory>
@@ -70,7 +80,7 @@ const MenuBory = styled.div`
     position: relative;
 
     width: auto;
-    height: auto;
+    height: 34px;
     gap: 6px;
     
     img{
@@ -81,17 +91,48 @@ const MenuBory = styled.div`
         object-fit:cover;
         z-index:5;
     }
+    .arrow{
+        transform: ${props => props.clicked ? 'rotate(180deg)' : ''};
+        transition: all linear .1s;
+    }
+
     .userImage{
         width: 40px;
         height: 40px;
         border: 3px solid #fee204;
     }
 
+    a{
+        color: white;
+         text-decoration:none;
+         font-size: 16px;
+
+         &:hover{
+             color: #fee204;
+         }
+    }
+
+    .signUp{
+        width: 75px;
+        height: 35px;
+        color #fee204;
+        background: none;
+        border-radius: 8px;
+        border: 2px solid #fee204;
+        font-size: 16px;
+        transition: all linear .2s;
+        cursor:pointer;
+
+         &:hover{
+            border: 2px solid #FFB800;
+            background: #655691;
+        }
+    }
 
     div{
         min-width: 75px;
         position: absolute;
-        top: ${props => props.clicked ? '73px' : '-10px'};
+        top: ${props => props.clicked ? '67px' : '-10px'};
         left: 0px;
         gap: 6px;
         transition: all linear .2s;
@@ -125,8 +166,15 @@ const MenuBory = styled.div`
         }
     }
 
+    @media(max-width:600px){
+        .signUp, .signIn{
+            display: none;
+        }
+    }
     @media(min-width:600px){
-        display: none;
+        .menuIcon, .offlineButton{
+            display: none;
+        }
     }
 
 `

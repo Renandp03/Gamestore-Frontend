@@ -52,22 +52,7 @@ export default function Header(){
         <HeaderBordy>
          
                 <Link href={'/'}><Logoimg src='/assets/Title.svg' alt='logo'/></Link>
-                <AuthMenu>
-                    {token ? 
-                    <>
-                        <img onClick={click}  className='arrow' src='../../assets/arrowExpandMore.svg' alt='arrow'/>
-                        <div clicked={String(clicked)} disabre={clicked} onClick={logout}><p>Logout</p></div>
-                    </> 
-                    : 
-                    <>
-                        <Link href='/signIn'>Login</Link>
-                        <Link href='/signUp'><button>signUp</button></Link>
-                    </>}
-                   
-                    {image ? <Link href={`/me`}><Userimg image={true} src={image} alt='userImg'/></Link> : 
-                     <Link href={'/'}><Userimg src='../../assets/userIconYellow.svg' alt='genericImage'/></Link>
-                    }
-                </AuthMenu>
+                
                 <Menu/>
 
             
@@ -156,7 +141,7 @@ const AuthMenu = styled.div`
         border-radius: 0px 0px 8px 8px;
 
         position: absolute;
-        top: ${props => ( props.children[0].props.children[1].props.clicked == 'true' ? '71px' : '24px')};
+        top: ${props => ( props.children[0].props.children[1].props.clicked == 'true' ? '74px' : '24px')};
         left: 0px;
         
         display: flex;
