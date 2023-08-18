@@ -89,7 +89,7 @@ const MenuBory = styled.div`
         border-radius: 34px;
         cursor: pointer;
         object-fit:cover;
-        z-index:5;
+        z-index:2;
     }
     .arrow{
         transform: ${props => props.clicked ? 'rotate(180deg)' : ''};
@@ -115,7 +115,7 @@ const MenuBory = styled.div`
     .signUp{
         width: 75px;
         height: 35px;
-        color #fee204;
+        color: white;
         background: none;
         border-radius: 8px;
         border: 2px solid #fee204;
@@ -124,6 +124,7 @@ const MenuBory = styled.div`
         cursor:pointer;
 
          &:hover{
+            color: #fee204;
             border: 2px solid #FFB800;
             background: #655691;
         }
@@ -147,7 +148,7 @@ const MenuBory = styled.div`
         background: ${props => props.clicked ? '#140A2F' : '#655691'};
         border:none;
         transition: all linear .2s;
-        z-index:1;
+        z-index:0;
 
         &:hover{
             color: ${props => props.clicked ? '#FDDD08' : '#655691'};

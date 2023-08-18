@@ -1,52 +1,9 @@
 import styled from 'styled-components'
 import Link from 'next/link'
-import MobileMenu from './mobileMenu';
 import Menu from './menu';
-import { useState, useEffect, useContext } from 'react';
-import { useRouter } from 'next/router'
-import { AlertContext } from '../../contexts/alertContext';
-import { TokenContext } from '../../contexts/tokenContext';
+
 
 export default function Header(){
-
-    const {setMessage} = useContext(AlertContext);
-    const {token,setToken,image,setImage,setUserId,setFavorites} = useContext(TokenContext);
-    const [clicked,setClicked] = useState(false);
-
-    const router = useRouter();
-
-    useEffect(() => {
-        const localStorageToken = JSON.parse(localStorage.token);
-        const localStorageImage = JSON.parse(localStorage.image);
-        const localStorageUserId = JSON.parse(localStorage.userId);
-
-        if (localStorageToken) {
-            setToken(localStorageToken);
-        }
-        if(localStorageImage){
-            setImage(localStorageImage);
-        }
-        if(localStorageUserId){
-            setUserId(localStorageUserId);
-        }
-    }, []);
-
-    function click(){
-        setClicked(!clicked);
-    }
-
-    function logout(){
-		localStorage.setItem("token", JSON.stringify(''));
-        localStorage.setItem("image", JSON.stringify(''));
-        localStorage.setItem("userId", JSON.stringify('0'));
-        setToken('');
-        setImage('');
-        setUserId(0);
-        setFavorites([])
-        router.push('/');
-        setTimeout(() => location.reload(), 1000)
-    }
-
 
     return(
         <HeaderBordy>
@@ -75,7 +32,7 @@ const HeaderBordy = styled.div`
     position: fixed;
     top: 0px;
     left:0px;
-    z-index:5;
+    z-index:1;
 
 `
 
