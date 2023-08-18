@@ -37,12 +37,8 @@ export default function Home() {
                 localStorage.setItem('favorites',JSON.stringify(response.data));
                 setFavorites(response.data);
               })
-              .catch((err) =>{ 
-                if(err.response.data.name == 'notFound'){
-                    console.log('Nenhum favorites encontrado');
-                }});
-    }else setFavorites([])
-    
+              .catch((err) =>{console.log(err)});
+    }
   }
 
   useEffect(() => {renderPage()},[userId])

@@ -42,7 +42,6 @@ export default function Menu(){
         setUserId(0);
         setFavorites([])
         router.push('/');
-        setTimeout(() => location.reload(), 1000)
     }
 
     return(
@@ -57,8 +56,8 @@ export default function Menu(){
                 <img className='menuIcon' src="../../assets/MobileMenu.svg" alt="menu" onClick={click}/>
             </>}
             
-            {image ? <img className="userImage" src={image} alt="onlineUser"/> :
-            <img src="assets/userIconYellow.svg" alt="offlineUser"/>}
+            {image ? <Link href={'/me'}><img className="userImage" src={image} alt="onlineUser"/></Link> :
+            <img src="../../assets/userIconYellow.svg" alt="offlineUser"/>}
             <div>
                 { token ? 
                 <>
@@ -106,6 +105,7 @@ const MenuBory = styled.div`
         color: white;
          text-decoration:none;
          font-size: 16px;
+         z-index: 2;
 
          &:hover{
              color: #fee204;
@@ -137,7 +137,7 @@ const MenuBory = styled.div`
         left: 0px;
         gap: 6px;
         transition: all linear .2s;
-
+        z-index: -1;
     }
 
     button{

@@ -17,6 +17,7 @@ export default function Game(props){
     useEffect(() => {
         const isLiked = favorites.filter( f => f.gameId == id);
         if(isLiked.length > 0){setLiked(true)}
+        else{setLiked(false)}
     }, [favorites]);
 
 
@@ -59,7 +60,8 @@ export default function Game(props){
         <GameBody platform={platform}>
             <Link href={`/game/${id}`}><img src={image} alt={name}/></Link>
             <div>
-                <img src={userImg} alt={userId} onClick={() => GoToUserPage(userId)}/>
+                {userImg ? <img src={userImg} alt={userId} onClick={() => GoToUserPage(userId)}/> : 
+                <img src='../../assets/userIconYellow.svg' alt={userId} onClick={() => GoToUserPage(userId)}/>}
                 {name.length > 8 ? 
                 <p>{name.substring(0,8) + '...'}</p> : 
                 <p>{name}</p>}
