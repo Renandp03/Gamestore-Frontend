@@ -28,10 +28,7 @@ export default function gamePage(){
         if(!id) return undefined;
         const URL = process.env.NEXT_PUBLIC_HOST;
         axios.get(`${URL}/games/${id}`)
-        .then((res) => {
-            setGameInfo(res.data);
-        
-        })
+        .then((res) => {setGameInfo(res.data);})
         .catch((err) => {console.log(err)})
     }
 
@@ -55,6 +52,19 @@ export default function gamePage(){
         })
     }
 
+    function startExchange(){
+        if(!id) return undefined;
+        const config = {
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const body = {desiredGameId:Number(id),offeredGameId:selectedGame}
+        const URL = process.env.NEXT_PUBLIC_HOST;
+        axios.post(`${URL}/exchange`,body,config)
+        .then(() => {router.push('/')})
+        .catch((err) => {console.log(err)});
+    }
 
     useEffect(() => {getGameInfo()},[id])
 
@@ -122,7 +132,10 @@ export default function gamePage(){
                             setDisabled={setDisabled}
                             />)}
                         </div>
-                        <button>ofertar</button>
+                        {
+                        selectedGame && 
+                        <button onClick={startExchange}>ofertar</button>
+                        }
                     </ChooseGameSpace>
                 }
                 
@@ -191,5 +204,17 @@ const ChooseGameSpace = styled.div`
 
     div{
         display:flex;
+    }
+    button{
+        width: auto;
+        height: auto;
+        padding: 5px 20px;
+        background: #FFBB12;
+        border: none;
+        border-radius: 3px;
+        color: #774801;
+        font-size: 20px;
+        font-weight: 500;
+        transition: all linear .2s;
     }
 `
