@@ -13,9 +13,9 @@ export default function Menu(){
 
 
     useEffect(() => {
-        const localStorageToken = JSON.parse(localStorage.token);
-        const localStorageImage = JSON.parse(localStorage.image);
-        const localStorageUserId = JSON.parse(localStorage.userId);
+        const localStorageToken = localStorage.token ? JSON.parse(localStorage.token) : null;
+        const localStorageImage = localStorage.image ? JSON.parse(localStorage.image) : null;
+        const localStorageUserId = localStorage.userId ? JSON.parse(localStorage.userId) : null;
 
         if (localStorageToken) {
             setToken(localStorageToken);

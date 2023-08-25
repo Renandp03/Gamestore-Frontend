@@ -9,7 +9,6 @@ export default function Header(){
         <HeaderBordy>
          
                 <Link href={'/'}><Logoimg src='/assets/Title.svg' alt='logo'/></Link>
-                
                 <Menu/>
 
             
