@@ -62,7 +62,11 @@ export default function gamePage(){
         const body = {desiredGameId:Number(id),offeredGameId:selectedGame}
         const URL = process.env.NEXT_PUBLIC_HOST;
         axios.post(`${URL}/exchange`,body,config)
-        .then(() => {router.push('/')})
+        .then(() => {
+            setMessage(`Solicitação feita com sucesso. Aguarde a resposta de ${gameInfo.owner.name}`);
+            setAlertDisable(false);
+            router.push('/')
+        })
         .catch((err) => {console.log(err)});
     }
 
@@ -133,8 +137,9 @@ export default function gamePage(){
                             />)}
                         </div>
                         {
-                        selectedGame && 
-                        <button onClick={startExchange}>ofertar</button>
+                        selectedGame ? 
+                        <button onClick={startExchange}>ofertar</button> :
+                        <></>
                         }
                     </ChooseGameSpace>
                 }
@@ -150,6 +155,10 @@ const GameSpace = styled.div`
     display: flex;
     padding: 30px 0px;
     align-items: flex-start;
+
+    @media(max-width: 650px){
+        flex-direction: column;
+    }
 `
 
 const GameInfo = styled.div`
@@ -204,6 +213,9 @@ const ChooseGameSpace = styled.div`
 
     div{
         display:flex;
+        width: 99%;
+        overflow-x: scroll;
+        margin-bottom: 50px;
     }
     button{
         width: auto;

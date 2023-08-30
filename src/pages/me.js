@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Head from 'next/head'
+import Link from "next/link";
 import UserGame from "@/components/userGame";
 
 
@@ -13,6 +14,7 @@ export default function UserPage(){
     const router = useRouter();
     const [userInfo, setUserInfo] = useState({});
     const [selectedGame, setSelectedGame] = useState();
+    const [disabled, setDisabled] = useState(true);
 
     async function getUser(userId,token){
         const config = {
@@ -71,7 +73,7 @@ export default function UserPage(){
                             <>
                                 <h1>Jogos disponíveis</h1>
                                 {games.map((g) =>
-                
+                                    <Link href={`/game/${g.id}`}>
                                     <UserGame 
                                         key={g.id}
                                         id={g.id}
@@ -79,7 +81,9 @@ export default function UserPage(){
                                         image={g.image}
                                         selectedGame={selectedGame}
                                         setSelectedGame={setSelectedGame}
+                                        setDisabled={setDisabled}
                                         />
+                                        </Link>
                                 )}
                             </> :
                             <h1>Você não possui jogos ainda.</h1>

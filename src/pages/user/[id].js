@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import Head from 'next/head'
 import UserGame from "@/components/userGame";
+import Link from "next/link";
 
 
 export default function UserPage(){
@@ -72,7 +73,7 @@ export default function UserPage(){
                             <>
                                 <h1>Jogos disponíveis</h1>
                                 {games.map((g) =>
-                
+                                    <Link href={`/game/${g.id}`}>
                                     <UserGame 
                                         key={g.id}
                                         id={g.id}
@@ -82,6 +83,7 @@ export default function UserPage(){
                                         setSelectedGame={setSelectedGame}
                                         setDisabled={setDisabled}
                                         />
+                                        </Link>
                                 )}
                             </> :
                             <h1>{name} não possui jogos ainda.</h1>

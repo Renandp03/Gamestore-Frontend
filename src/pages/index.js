@@ -87,7 +87,7 @@ export const Screen = styled.div`
   min-height:100vh;
   background: linear-gradient(180deg, #1B0166 0%, #08001F 100%);
   margin-top: 100px;
-
+  padding-bottom: 60px;
 
   .title{
     color: white;

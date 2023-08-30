@@ -5,6 +5,7 @@ export default function UserGame(props){
     const { id ,name, image, selectedGame, setSelectedGame, setDisabled } = props;
 
     function selectGame(){
+        if(!setDisabled) return null;
        if(selectedGame == id){
         setSelectedGame(0);
         setDisabled(false);
