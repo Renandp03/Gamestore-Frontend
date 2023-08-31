@@ -6,12 +6,15 @@ import { TokenContext } from '../../contexts/tokenContext';
 import axios from 'axios';
 import Game from '@/components/game';
 import Alert from '@/components/alert';
+import Notifications from '@/components/notifications';
 
 
 export default function Home() {
 
   const [games, setGames] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const {setToken, userId,setUserId, setFavorites } = useContext(TokenContext);
+  const URL = process.env.NEXT_PUBLIC_HOST
 
   async function renderPage(){
     
@@ -20,7 +23,7 @@ export default function Home() {
     const userId = JSON.parse(localStorage.getItem("userId"));
     setUserId(JSON.parse(localStorage.getItem("userId")));
 
-    const URL = process.env.NEXT_PUBLIC_HOST
+    
       axios.get(`${URL}/games`,)
         .then((res) => {
           setGames(res.data);
@@ -38,6 +41,10 @@ export default function Home() {
                 setFavorites(response.data);
               })
               .catch((err) =>{console.log(err)});
+
+      axios.get(`${URL}/notifications`,config)
+              .then((res) => setNotifications(res.data))
+              .catch((err)=> console.log(err.message));
     }
   }
 
@@ -56,6 +63,7 @@ export default function Home() {
         <Header/>
         <Screen>
           <h1 className='title'>Jogos em alta:</h1>
+          <DivFlex>
           <GamesDiv>
           
             {games.map((g) =>
@@ -70,6 +78,8 @@ export default function Home() {
                 userImg={g.owner.image}/>
             )}
           </GamesDiv>
+          <><Notifications notifications={notifications}/></>
+          </DivFlex>
         </Screen>
       </main>
     </>
@@ -107,4 +117,9 @@ const GamesDiv = styled.div`
   display: flex;
   justify-content:center;
   flex-wrap: wrap;
+  
+`
+
+const DivFlex = styled.div`
+  display: flex;
 `
